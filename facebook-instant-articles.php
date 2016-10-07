@@ -300,6 +300,22 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	}
 	add_action( 'wp_head', 'inject_url_claiming_meta_tag' );
 
+	/**
+	 * Automatically add meta tag for Instant Articles Open Publish scraper
+	 *
+	 * @since 2.12
+	 */
+	function inject_op_markup_meta_tag() {
+		$post = get_post();
+		// Transform the post to an Instant Article.
+		$adapter = new Instant_Articles_Post( $post );
+		$url = $adapter->get_canonical_url();
+		?>
+		<meta property="op:markup_url" content="<?php echo esc_attr( $url ); ?>?op=1" />
+		<?php
+	}
+	add_action( 'wp_head', 'inject_op_markup_meta_tag' );
+
 	// Initialize the Instant Articles settings page.
 	Instant_Articles_Settings::init();
 
@@ -307,5 +323,21 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	Instant_Articles_Meta_Box::init();
 
 	// Initialize the Instant Articles publisher.
-	Instant_Articles_Publisher::init();
+	//Instant_Articles_Publisher::init();
+
+
+	function op_markup_version( ) {
+		$post = get_post();
+
+		if (isset($_GET['op']) && $_GET['op']) {
+			// Transform the post to an Instant Article.
+			$adapter = new Instant_Articles_Post( $post );
+			$article = $adapter->to_instant_article();
+			echo $article->render(null, true);
+
+			die();
+		}
+	}
+	add_action( 'wp', 'op_markup_version' );
+
 }
