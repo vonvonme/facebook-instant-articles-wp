@@ -147,6 +147,9 @@
         "class": "IgnoreRule",
         "selector" : "script"
     }, {
+        "class": "IgnoreRule",
+        "selector" : "div.sm_dfp_ads"
+    },{
         "class": "InteractiveRule",
         "selector" : "iframe",
         "properties" : {

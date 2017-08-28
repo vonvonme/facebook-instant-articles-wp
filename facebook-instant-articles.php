@@ -349,6 +349,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		$publishing_settings = Instant_Articles_Option_Publishing::get_option_decoded();
 		$fb_page_settings = Instant_Articles_Option_FB_Page::get_option_decoded();
 
+        if (defined('FB_PAGE_ID'))
+            $fb_page_settings['page_id'] = (FB_PAGE_ID);
+
 		if ( isset( $fb_page_settings[ 'page_id' ] ) ) {
 			?>
 			<meta property="fb:pages" content="<?php echo esc_attr( $fb_page_settings[ 'page_id' ] ); ?>" />
