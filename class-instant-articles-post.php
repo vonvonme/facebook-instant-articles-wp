@@ -723,6 +723,8 @@ class Instant_Articles_Post {
          */
         do_action( 'instant_articles_after_transform_post', $this );
 
+        remove_all_actions('wp_footer');
+
         return $this->instant_article;
     }
 
