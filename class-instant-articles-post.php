@@ -281,7 +281,6 @@ class Instant_Articles_Post {
         }
 
         return $this->_content;
-
     }
 
     /**
@@ -293,6 +292,7 @@ class Instant_Articles_Post {
     protected function _get_the_content() {
 
         // Try to get the content from a transient, but only if the cached version have the same modtime.
+/*
         $cache_mod_time = get_transient( 'instantarticles_mod_' . $this->_post->ID );
         if ( get_post_modified_time( 'Y-m-d H:i:s', true, $this->_post->ID ) === $cache_mod_time ) {
             $content = get_transient( 'instantarticles_content_' . $this->_post->ID );
@@ -300,7 +300,7 @@ class Instant_Articles_Post {
                 return $content;
             }
         }
-
+*/
         global $post, $more;
 
         // Force $more.
@@ -318,6 +318,13 @@ class Instant_Articles_Post {
 
         // Now get the content.
         $content = $this->_post->post_content;
+
+	// remove  added shortcode from other plugins
+	if (class_exists('toc') ){
+		global $tic;
+		remove_filter('the_content', array($tic, 'the_content'), 100);
+	}
+	remove_all_filters('the_content');
 	$content = do_shortcode($content);
 
         /**
@@ -697,6 +704,18 @@ class Instant_Articles_Post {
         }
 
         $the_content = $this->get_the_content();
+        preg_match_all( '!<div.*?class=[\'"]sm_dfp_ads.*?>[.\s\S]*?</div>!m', $the_content, $matches );
+        foreach ( $matches[0] as $divs_ads ) {
+		$the_content = str_replace( $divs_ads, '', $the_content );
+        }
+
+	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol>");
+
+        if ( ! has_filter( 'the_content', 'wpautop' ) )
+            add_filter( 'the_content', 'wpautop' );
+
+        $the_content = apply_filters( 'the_content', $the_content );
+
         if (!Type::isTextEmpty($the_content)) {
             $transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
         }
@@ -723,7 +742,7 @@ class Instant_Articles_Post {
          */
         do_action( 'instant_articles_after_transform_post', $this );
 
-        remove_all_actions('wp_footer');
+	remove_all_actions('wp_footer');
 
         return $this->instant_article;
     }
@@ -873,13 +892,13 @@ class Instant_Articles_Post {
             }
         }
 
-        // pixel events
         if (defined('FB_PIXEL_ID')) {
+            // pixel events
             $document = new DOMDocument();
             $fragment = $document->createDocumentFragment();
             $pixel_script = "<script> !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead'); </script>";
 
-            $pixel_script = str_replace('{FB_PIXEL_ID}', (FB_PIXEL_ID) , $pixel_script);
+            $pixel_script = str_replace('{FB_PIXEL_ID}', FB_PIXEL_ID, $pixel_script);
 
             $valid_html = @$fragment->appendXML($pixel_script);
 
