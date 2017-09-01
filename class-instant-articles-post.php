@@ -714,7 +714,7 @@ class Instant_Articles_Post {
 		$the_content = str_replace( $divs_ads, '', $the_content );
         }
 
-	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol>");
+	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
 
         if ( ! has_filter( 'the_content', 'wpautop' ) )
             add_filter( 'the_content', 'wpautop' );
