@@ -325,7 +325,6 @@ class Instant_Articles_Post {
 		remove_filter('the_content', array($tic, 'the_content'), 100);
 	}
 	remove_all_filters('the_content');
-	$content = do_shortcode($content);
 
         /**
          * Apply the default filter 'the_content' for the post content.
@@ -339,6 +338,9 @@ class Instant_Articles_Post {
             add_filter( 'the_content', 'wpautop' );
 
         $content = apply_filters( 'the_content', $content );
+	global $wp_embed;
+	$content = $wp_embed->run_shortcode($content);
+	$content = do_shortcode($content);
 
         // Maybe cleanup some globals after us?
         $more = $orig_more;
