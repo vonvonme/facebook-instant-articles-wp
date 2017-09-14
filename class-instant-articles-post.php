@@ -290,6 +290,7 @@ class Instant_Articles_Post {
      * @return string The content
      */
     protected function _get_the_content() {
+	remove_action('init', 'start_output_buffer', 9999);
 
         // Try to get the content from a transient, but only if the cached version have the same modtime.
 /*
@@ -338,9 +339,6 @@ class Instant_Articles_Post {
             add_filter( 'the_content', 'wpautop' );
 
         $content = apply_filters( 'the_content', $content );
-	global $wp_embed;
-	$content = $wp_embed->run_shortcode($content);
-	$content = do_shortcode($content);
 
         // Maybe cleanup some globals after us?
         $more = $orig_more;
@@ -717,6 +715,9 @@ class Instant_Articles_Post {
         }
 
 	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
+	global $wp_embed;
+	$the_content = $wp_embed->run_shortcode($the_content);
+	$the_content = do_shortcode($the_content);
 
         if ( ! has_filter( 'the_content', 'wpautop' ) )
             add_filter( 'the_content', 'wpautop' );
@@ -726,6 +727,7 @@ class Instant_Articles_Post {
         if (!Type::isTextEmpty($the_content)) {
             $transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
         }
+
 
         $this->add_ads_from_settings();
 
