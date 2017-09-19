@@ -148,6 +148,9 @@
         "selector" : "script"
     }, {
         "class": "IgnoreRule",
+        "selector" : "div.sm-fb-like-and-share"
+    }, {
+        "class": "IgnoreRule",
         "selector" : "div.sm_dfp_ads"
     },{
         "class": "InteractiveRule",
