@@ -724,6 +724,17 @@ class Instant_Articles_Post {
         }
 	// escape a img tag inside anchor tag to outside of anchor tag.
 
+	// escape a img tag inside strong tag to outside of strong tag.
+        preg_match_all( '!<strong>[^<]*<img[^>]*>[^<]*</strong>!m', $the_content, $matches );
+        foreach ( $matches[0] as $m ) {
+		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+		foreach( $matched_imgs[0] as $img_tag ) {
+			$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
+		}
+        }
+	// escape a img tag inside strong tag to outside of strong tag.
+
+
 	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
 	global $wp_embed;
 	$the_content = $wp_embed->run_shortcode($the_content);
