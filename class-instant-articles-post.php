@@ -744,6 +744,26 @@ class Instant_Articles_Post {
         }
 	// escape a img tag inside headings tag to outside of headings tag.
 
+	// escape a img tag inside headings tag to outside of headings tag.
+        preg_match_all( '!<li>.*?<img.*?</li>!ms', $the_content, $matches );
+        foreach ( $matches[0] as $m ) {
+		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+		$new_m = str_replace('<li>', '' , $m);
+		$new_m = str_replace('</li>', '' , $new_m);
+		$the_content = str_replace($m, $new_m, $the_content);
+        }
+	// escape a img tag inside headings tag to outside of headings tag.
+
+	// remove empty ul / ol   tags
+/*
+        preg_match_all( '!<(ol|ul)>*?</\1>!ms', $the_content, $matches );
+        foreach ( $matches[0] as $m ) {
+print_r($m);
+        }
+*/
+	// remove empty ul / ol   tags
+	
+
 
 	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
 	global $wp_embed;
