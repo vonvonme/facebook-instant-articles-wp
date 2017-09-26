@@ -755,15 +755,18 @@ class Instant_Articles_Post {
 	// escape a img tag inside headings tag to outside of headings tag.
 
 	// remove empty ul / ol   tags
-/*
-        preg_match_all( '!<(ol|ul)>*?</\1>!ms', $the_content, $matches );
-        foreach ( $matches[0] as $m ) {
-print_r($m);
+        preg_match_all( '!<(ol|ul)>.*?</\1>!ms', $the_content, $matches );
+	foreach ( $matches[0] as $m ) {
+		preg_match_all('!<li>.*?</li>!ms', $m, $li_tags);
+		if (count($li_tags[0]) == 0) {
+			$new_m = str_replace('<ol>', '', $m);
+			$new_m = str_replace('</ol>', '', $new_m);
+			$new_m = str_replace('<ul>', '', $new_m);
+			$new_m = str_replace('</ul>', '', $new_m);
+			$the_content = str_replace($m, $new_m , $the_content);
+		}
         }
-*/
 	// remove empty ul / ol   tags
-	
-
 
 	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
 	global $wp_embed;
