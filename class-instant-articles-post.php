@@ -714,6 +714,13 @@ class Instant_Articles_Post {
 		$the_content = str_replace( $divs_ads, '', $the_content );
         }
 
+	// replacce old imgae url  to googleapis.com/blahblah
+        preg_match_all( '!//storage.cloud.google.com/!ms', $the_content, $matches );
+        foreach ( $matches[0] as $old_url ) {
+		$the_content = str_replace( $old_url, 'https://storage.googleapis.com/', $the_content );
+        }
+	// replace old imgae url  to googleapis.com/blahblah
+
 	// escape a img tag inside anchor tag to outside of anchor tag.
         preg_match_all( '!<a .*<img[^>]*>.*</a>!m', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
