@@ -742,7 +742,7 @@ class Instant_Articles_Post {
 	// escape a img tag inside strong tag to outside of strong tag.
 
 	// escape a img tag inside headings tag to outside of headings tag.
-        preg_match_all( '!<h(\d+)>[^<]*<img[^>]*>[^<]*</h\1>!m', $the_content, $matches );
+        preg_match_all( '!<h(\d+)>.*<img[^>]*>.*</h\1>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
 		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
 		foreach( $matched_imgs[0] as $img_tag ) {
