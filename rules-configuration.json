@@ -196,6 +196,15 @@
             }
         }
     }, {
+	    "class": "InteractiveRule",
+		    "selector" : "div.fb-video",
+		    "properties" : {
+			    "interactive.iframe" : {
+				    "type" : "element",
+				    "selector" : "div.fb-video"
+			    }
+		    }
+    } , {
         "class": "InteractiveRule",
         "selector" : "div.interactive",
         "properties" : {
