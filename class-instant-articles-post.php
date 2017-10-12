@@ -780,7 +780,6 @@ class Instant_Articles_Post {
 	$the_content = $wp_embed->run_shortcode($the_content);
 	$the_content = do_shortcode($the_content);
 
-
         if ( ! has_filter( 'the_content', 'wpautop' ) )
             add_filter( 'the_content', 'wpautop' );
 
