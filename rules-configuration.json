@@ -195,30 +195,6 @@
                 "attribute": "width"
             }
         }
-    }, {
-	    "class": "InteractiveRule",
-		    "selector" : "div.fb-video",
-		    "properties" : {
-			    "interactive.iframe" : {
-				    "type" : "element",
-				    "selector" : "div.fb-video"
-			    },
-			    "interactive.url" : {
-				    "type" : "string",
-				    "selector" : "div.fb-video",
-				    "attribute": "data-href"
-			    },
-			    "interactive.height" : {
-				    "type" : "int",
-				    "selector" : "iframe",
-				    "attribute": "height"
-			    },
-			    "interactive.width" : {
-				    "type" : "int",
-				    "selector" : "iframe",
-				    "attribute": "width"
-			    }
-		    }
     } , {
         "class": "InteractiveRule",
         "selector" : "div.interactive",
