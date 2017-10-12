@@ -58,6 +58,7 @@ class Instant_Articles_Post {
      * @var Transformer The Transformer object
      */
     public $transformer = null;
+    public $temp_content = null;
 
     /**
      * Setup data and build the content
@@ -290,7 +291,7 @@ class Instant_Articles_Post {
      * @return string The content
      */
     protected function _get_the_content() {
-	remove_action('init', 'start_output_buffer', 9999);
+        remove_action('init', 'start_output_buffer', 9999);
 
         // Try to get the content from a transient, but only if the cached version have the same modtime.
 /*
@@ -301,7 +302,7 @@ class Instant_Articles_Post {
                 return $content;
             }
         }
-*/
+ */
         global $post, $more;
 
         // Force $more.
@@ -320,12 +321,12 @@ class Instant_Articles_Post {
         // Now get the content.
         $content = $this->_post->post_content;
 
-	// remove  added shortcode from other plugins
-	if (class_exists('toc') ){
-		global $tic;
-		remove_filter('the_content', array($tic, 'the_content'), 100);
-	}
-	remove_all_filters('the_content');
+        // remove  added shortcode from other plugins
+        if (class_exists('toc') ){
+            global $tic;
+            remove_filter('the_content', array($tic, 'the_content'), 100);
+        }
+        remove_all_filters('the_content');
 
         /**
          * Apply the default filter 'the_content' for the post content.
@@ -472,12 +473,12 @@ class Instant_Articles_Post {
             'src' => '',
             'caption' => '',
         );
-	$eufi_url  = get_post_meta($this->_post->ID, '_dcms_eufi_img', true);
-	if ($eufi_url != null && $eufi_url != '') {
-		error_log('eufi_url = '. $eufi_url);
-		$image_data['src'] = $eufi_url;
-	}
-	else if ( has_post_thumbnail( $this->_post->ID ) ) {
+        $eufi_url  = get_post_meta($this->_post->ID, '_dcms_eufi_img', true);
+        if ($eufi_url != null && $eufi_url != '') {
+            error_log('eufi_url = '. $eufi_url);
+            $image_data['src'] = $eufi_url;
+        }
+        else if ( has_post_thumbnail( $this->_post->ID ) ) {
 
             $image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $this->_post->ID ), 'full' );
             $attachment_id   = get_post_thumbnail_id( $this->_post->ID );
@@ -711,80 +712,81 @@ class Instant_Articles_Post {
         $the_content = $this->get_the_content();
         preg_match_all( '!<div.*?class=[\'"]sm_dfp_ads.*?>[.\s\S]*?</div>!m', $the_content, $matches );
         foreach ( $matches[0] as $divs_ads ) {
-		$the_content = str_replace( $divs_ads, '', $the_content );
+            $the_content = str_replace( $divs_ads, '', $the_content );
         }
 
-	// replacce old imgae url  to googleapis.com/blahblah
+        // replacce old imgae url  to googleapis.com/blahblah
         preg_match_all( '!//storage.cloud.google.com/!ms', $the_content, $matches );
         foreach ( $matches[0] as $old_url ) {
-		$the_content = str_replace( $old_url, 'https://storage.googleapis.com/', $the_content );
+            $the_content = str_replace( $old_url, 'https://storage.googleapis.com/', $the_content );
         }
-	// replace old imgae url  to googleapis.com/blahblah
+        // replace old imgae url  to googleapis.com/blahblah
 
-	// escape a img tag inside anchor tag to outside of anchor tag.
+        // escape a img tag inside anchor tag to outside of anchor tag.
         preg_match_all( '!<a .*<img[^>]*>.*</a>!m', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
-		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-		foreach( $matched_imgs[0] as $img_tag ) {
-			$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-		}
+            preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+            foreach( $matched_imgs[0] as $img_tag ) {
+                $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
+            }
         }
-	// escape a img tag inside anchor tag to outside of anchor tag.
+        // escape a img tag inside anchor tag to outside of anchor tag.
 
-	// escape a img tag inside strong tag to outside of strong tag.
+        // escape a img tag inside strong tag to outside of strong tag.
         preg_match_all( '!<strong>[^<]*<img[^>]*>[^<]*</strong>!m', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
-		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-		foreach( $matched_imgs[0] as $img_tag ) {
-			$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-		}
+            preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+            foreach( $matched_imgs[0] as $img_tag ) {
+                $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
+            }
         }
-	// escape a img tag inside strong tag to outside of strong tag.
+        // escape a img tag inside strong tag to outside of strong tag.
 
-	// escape a img tag inside headings tag to outside of headings tag.
+        // escape a img tag inside headings tag to outside of headings tag.
         preg_match_all( '!<h(\d+)>.*<img[^>]*>.*</h\1>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
-		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-		foreach( $matched_imgs[0] as $img_tag ) {
-			$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-		}
+            preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+            foreach( $matched_imgs[0] as $img_tag ) {
+                $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
+            }
         }
-	// escape a img tag inside headings tag to outside of headings tag.
+        // escape a img tag inside headings tag to outside of headings tag.
 
-	// escape a img tag inside headings tag to outside of headings tag.
+        // escape a img tag inside headings tag to outside of headings tag.
         preg_match_all( '!<li>.*?<img.*?</li>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
-		preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-		$new_m = str_replace('<li>', '' , $m);
-		$new_m = str_replace('</li>', '' , $new_m);
-		$the_content = str_replace($m, $new_m, $the_content);
+            preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
+            $new_m = str_replace('<li>', '' , $m);
+            $new_m = str_replace('</li>', '' , $new_m);
+            $the_content = str_replace($m, $new_m, $the_content);
         }
-	// escape a img tag inside headings tag to outside of headings tag.
+        // escape a img tag inside headings tag to outside of headings tag.
 
-	// remove empty ul / ol   tags
+        // remove empty ul / ol   tags
         preg_match_all( '!<(ol|ul)>.*?</\1>!ms', $the_content, $matches );
-	foreach ( $matches[0] as $m ) {
-		preg_match_all('!<li>.*?</li>!ms', $m, $li_tags);
-		if (count($li_tags[0]) == 0) {
-			$new_m = str_replace('<ol>', '', $m);
-			$new_m = str_replace('</ol>', '', $new_m);
-			$new_m = str_replace('<ul>', '', $new_m);
-			$new_m = str_replace('</ul>', '', $new_m);
-			$the_content = str_replace($m, $new_m , $the_content);
-		}
+        foreach ( $matches[0] as $m ) {
+            preg_match_all('!<li>.*?</li>!ms', $m, $li_tags);
+            if (count($li_tags[0]) == 0) {
+                $new_m = str_replace('<ol>', '', $m);
+                $new_m = str_replace('</ol>', '', $new_m);
+                $new_m = str_replace('<ul>', '', $new_m);
+                $new_m = str_replace('</ul>', '', $new_m);
+                $the_content = str_replace($m, $new_m , $the_content);
+            }
         }
-	// remove empty ul / ol   tags
+        // remove empty ul / ol   tags
 
-	$the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
-	global $wp_embed;
-	$the_content = $wp_embed->run_shortcode($the_content);
-	$the_content = do_shortcode($the_content);
+        $the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
+        global $wp_embed;
+        $the_content = $wp_embed->run_shortcode($the_content);
+        $the_content = do_shortcode($the_content);
 
         if ( ! has_filter( 'the_content', 'wpautop' ) )
             add_filter( 'the_content', 'wpautop' );
 
         $the_content = apply_filters( 'the_content', $the_content );
 
+        $this->temp_content =  $the_content;
         if (!Type::isTextEmpty($the_content)) {
             $transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
         }
@@ -812,7 +814,7 @@ class Instant_Articles_Post {
          */
         do_action( 'instant_articles_after_transform_post', $this );
 
-	remove_all_actions('wp_footer');
+        remove_all_actions('wp_footer');
 
         return $this->instant_article;
     }
@@ -865,19 +867,19 @@ class Instant_Articles_Post {
             }
             break;
             //if ( ! empty( $settings_ads['fan_placement_id'] ) ) {
-                //$placement_id = $settings_ads['fan_placement_id'];
+            //$placement_id = $settings_ads['fan_placement_id'];
 
-                //$ad->withSource(
-                    //add_query_arg(
-                        //array(
-                            //'placement' => $placement_id,
-                            //'adtype' => 'banner' . $width . 'x' . $height,
-                        //),
-                        //'https://www.facebook.com/adnw_request'
-                    //)
-                //);
+            //$ad->withSource(
+            //add_query_arg(
+            //array(
+            //'placement' => $placement_id,
+            //'adtype' => 'banner' . $width . 'x' . $height,
+            //),
+            //'https://www.facebook.com/adnw_request'
+            //)
+            //);
 
-                //$header->addAd( $ad );
+            //$header->addAd( $ad );
             //}
             //break;
         case 'iframe':
@@ -967,7 +969,7 @@ class Instant_Articles_Post {
             $document = new DOMDocument();
             $fragment = $document->createDocumentFragment();
             $pixel_script = "<script><![CDATA[ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead'); 
-[5, 10, 15,30,45,60,90,120,150,180,240,300].forEach(function(seconds){ setTimeout(function(){ var current_elapsed_time = seconds; if (window.fbq && typeof window.fbq == 'function') { window.fbq('trackCustom', 'IA_ViewContent_' + seconds, {'position': 'end'}); } }, seconds * 1000); });]]></script>";
+            [5, 10, 15,30,45,60,90,120,150,180,240,300].forEach(function(seconds){ setTimeout(function(){ var current_elapsed_time = seconds; if (window.fbq && typeof window.fbq == 'function') { window.fbq('trackCustom', 'IA_ViewContent_' + seconds, {'position': 'end'}); } }, seconds * 1000); });]]></script>";
 
             $pixel_script = str_replace('{FB_PIXEL_ID}', FB_PIXEL_ID, $pixel_script);
 

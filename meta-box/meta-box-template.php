@@ -125,7 +125,7 @@ use Facebook\InstantArticles\Client\ServerMessage;
 <div class="instant-articles-transformer-markup">
 	<div>
 		<label for="source">Source Markup:</label>
-		<textarea class="source" readonly><?php echo esc_textarea( $adapter->get_the_content() ); ?></textarea>
+		<textarea class="source" readonly><?php $adapter->to_instant_article(); echo esc_textarea( $adapter->temp_content ); ?></textarea>
 	</div>
 	<div>
 		<label for="transformed">Transformed Markup:</label>
