@@ -475,7 +475,6 @@ class Instant_Articles_Post {
         );
         $eufi_url  = get_post_meta($this->_post->ID, '_dcms_eufi_img', true);
         if ($eufi_url != null && $eufi_url != '') {
-            error_log('eufi_url = '. $eufi_url);
             $image_data['src'] = $eufi_url;
         }
         else if ( has_post_thumbnail( $this->_post->ID ) ) {
