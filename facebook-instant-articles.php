@@ -425,12 +425,13 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	function rescrape_article( $post_id, $post ) {
 		$adapter = new Instant_Articles_Post( $post );
 		$old_slugs = get_post_meta( $post_id, '_wp_old_slug' );
+		$access_token = FB_ACCESS_TOKEN;
 		if ( $adapter->should_submit_post() ) {
 			try {
 				$client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
 				$url_encoded = urlencode($adapter->get_canonical_url());
 				$res = $client->send(
-					"https://graph.facebook.com/?id=$url_encoded&scrape=true",
+					"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
 					'POST',
 					'',
 					array(),
