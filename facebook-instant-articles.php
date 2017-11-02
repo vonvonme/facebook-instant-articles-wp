@@ -445,7 +445,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 
 					$url_encoded = urlencode($clone_adapter->get_canonical_url());
 					$res = $client->send(
-						"https://graph.facebook.com/?id=$url_encoded&scrape=true",
+						"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
 						'POST',
 						'',
 						array(),
