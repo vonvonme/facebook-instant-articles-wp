@@ -66,6 +66,18 @@
         "class": "PassThroughRule",
         "selector": "blockquote p"
     }, {
+        "class": "PassThroughRule",
+        "selector": "blockquote img"
+    }, {
+        "class": "PassThroughRule",
+        "selector": "blockquote ul"
+    }, {
+        "class": "PassThroughRule",
+        "selector": "blockquote ol"
+    }, {
+        "class": "PassThroughRule",
+        "selector": "blockquote li"
+    }, {
         "class": "ItalicRule",
         "selector": "cite"
     }, {

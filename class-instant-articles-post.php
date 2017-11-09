@@ -742,8 +742,12 @@ class Instant_Articles_Post {
         // escape a img tag inside strong tag to outside of strong tag.
 
         // escape a img tag inside headings tag to outside of headings tag.
-        preg_match_all( '!<h(\d+)>.*<img[^>]*>.*</h\1>!ms', $the_content, $matches );
+        preg_match_all( '!<h(\d+)[^>]*>.*?<img[^>]*>.*?</h\1>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
+/*
+error_log('here');
+error_log($m);
+*/
             preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
             foreach( $matched_imgs[0] as $img_tag ) {
                 $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
@@ -751,6 +755,7 @@ class Instant_Articles_Post {
         }
         // escape a img tag inside headings tag to outside of headings tag.
 
+/*
         // escape a img tag inside headings tag to outside of headings tag.
         preg_match_all( '!<li>.*?<img.*?</li>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
@@ -760,7 +765,7 @@ class Instant_Articles_Post {
             $the_content = str_replace($m, $new_m, $the_content);
         }
         // escape a img tag inside headings tag to outside of headings tag.
-
+*/
         // remove empty ul / ol   tags
         preg_match_all( '!<(ol|ul)>.*?</\1>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
@@ -789,6 +794,7 @@ class Instant_Articles_Post {
         if (!Type::isTextEmpty($the_content)) {
             $transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
         }
+
 
 
         $this->add_ads_from_settings();
