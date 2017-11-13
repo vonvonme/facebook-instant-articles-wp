@@ -722,6 +722,7 @@ class Instant_Articles_Post {
         // replace old imgae url  to googleapis.com/blahblah
 
         // escape a img tag inside anchor tag to outside of anchor tag.
+/*
         preg_match_all( '!<a .*<img[^>]*>.*</a>!m', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
             preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
@@ -729,9 +730,11 @@ class Instant_Articles_Post {
                 $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
             }
         }
+*/
         // escape a img tag inside anchor tag to outside of anchor tag.
 
         // escape a img tag inside strong tag to outside of strong tag.
+/*
         preg_match_all( '!<strong>[^<]*<img[^>]*>[^<]*</strong>!m', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
             preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
@@ -739,15 +742,13 @@ class Instant_Articles_Post {
                 $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
             }
         }
+*/
         // escape a img tag inside strong tag to outside of strong tag.
 
         // escape a img tag inside headings tag to outside of headings tag.
+/*
         preg_match_all( '!<h(\d+)[^>]*>.*?<img[^>]*>.*?</h\1>!ms', $the_content, $matches );
         foreach ( $matches[0] as $m ) {
-/*
-error_log('here');
-error_log($m);
-*/
             preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
             foreach( $matched_imgs[0] as $img_tag ) {
                 $the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
