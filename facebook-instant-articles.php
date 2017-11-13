@@ -430,28 +430,36 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 			try {
 				$client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
 				$url_encoded = urlencode($adapter->get_canonical_url());
-				$res = $client->send(
-					"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
-					'POST',
-					'',
-					array(),
-					60
-				);
-				error_log($adapter->get_canonical_url(). " rescraping res :: ".$res->getBody());
+				$try = 0;
+				while ($try < 5) {
+					$res = $client->send(
+							"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+							'POST',
+							'',
+							array(),
+							60
+							);
+					error_log($adapter->get_canonical_url(). " rescraping res :: ".$res->getBody());
+					$try ++;
+				}
 				foreach ( $old_slugs as $slug ) {
 					$clone_post = clone $post;
 					$clone_post->post_name = $slug;
 					$clone_adapter = new Instant_Articles_Post( $clone_post );
 
 					$url_encoded = urlencode($clone_adapter->get_canonical_url());
-					$res = $client->send(
-						"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
-						'POST',
-						'',
-						array(),
-						60
-					);
-					error_log($clone_adapter->get_canonical_url(). " rescraping res :: ".$res->getBody());
+					$try = 0;
+					while ($try < 5) {
+						$res = $client->send(
+								"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+								'POST',
+								'',
+								array(),
+								60
+								);
+						error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+						$try ++;
+					}
 				}
 			} catch ( Exception $e ) {
 				Logger::getLogger( 'instantarticles-wp-plugin' )->error(
