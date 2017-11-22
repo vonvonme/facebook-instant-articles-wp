@@ -90,25 +90,45 @@
                 "attribute": "src"
             }
         }
-    }, {
-        "class": "ImageRule",
-        "selector": "//a[img and not(*[not(self::img)])]",
-        "properties": {
-            "image.url": {
-                "type": "string",
-                "selector": "img",
-                "attribute": "src"
-            }
-        }
-    }, {
-        "class": "ListItemRule",
-        "selector" : "li"
-    }, {
-        "class": "ListElementRule",
-        "selector" : "ul"
+	}, {
+		"class": "ImageRule",
+			"selector": "//a[img and not(*[not(self::img)])]",
+			"properties": {
+				"image.url": {
+					"type": "string",
+					"selector": "img",
+					"attribute": "src"
+				}
+			}
+	}, {
+		"class": "RelatedArticlesRule",
+			"selector": "ul.related-article",
+			"properties" : {
+				"related.title" : {
+					"type" : "string",
+					"selector" : "ul.related-article",
+					"attribute": "title"
+				}
+			}
+	}, {
+		"class": "RelatedItemRule",
+			"selector": "li",
+			"properties": {
+				"related.url": {
+					"type": "string",
+					"selector": "a",
+					"attribute": "href"
+				}
+			}
     }, {
         "class": "ListElementRule",
         "selector" : "ol"
+    }, {
+        "class": "ListElementRule",
+        "selector" : "//ul[not(contains (@class, 'related-article'))]"
+    }, {
+        "class": "ListItemRule",
+        "selector" : "li"
     }, {
         "class": "BlockquoteRule",
         "selector" : "blockquote"
