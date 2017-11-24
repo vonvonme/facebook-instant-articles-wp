@@ -440,6 +440,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 							60
 							);
 					error_log($adapter->get_canonical_url(). " rescraping res :: ".$res->getBody());
+					if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+						break;
+					}
 					$try ++;
 				}
 				foreach ( $old_slugs as $slug ) {
@@ -458,6 +461,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 								60
 								);
 						error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+						if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+							break;
+						}
 						$try ++;
 					}
 				}
