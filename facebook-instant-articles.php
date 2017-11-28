@@ -439,7 +439,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
                         array(),
                         60
                     );
-                    error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
                     if (!array_key_exists('error', json_decode($res->getBody(), true))) {
                         break;
                     }
