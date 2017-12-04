@@ -791,6 +791,10 @@ class Instant_Articles_Post {
 
         $the_content = apply_filters( 'the_content', $the_content );
 
+	if ( class_exists( 'Jetpack_Photon' ) && Jetpack::is_module_active( 'photon' ) ) {
+		$the_content = Jetpack_Photon::filter_the_content( $the_content );
+	}
+
         $this->temp_content =  $the_content;
         if (!Type::isTextEmpty($the_content)) {
             $transformer->transformString( $this->instant_article, $the_content, get_option( 'blog_charset' ) );
