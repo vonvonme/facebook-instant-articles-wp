@@ -782,9 +782,12 @@ class Instant_Articles_Post {
         // remove empty ul / ol   tags
 
         $the_content = strip_tags($the_content, "<img><p><br><i><b><em><strong><span><a><iframe><h1><h2><h3><h4><h5><h6><del><small><blockquote><li><ul><ol><figure><figcaption>");
+        $_old_ia_markup = $_GET['ia_markup'];
+        $_GET['ia_markup'] = '1';
         global $wp_embed;
         $the_content = $wp_embed->run_shortcode($the_content);
         $the_content = do_shortcode($the_content);
+        $_GET['ia_markup'] = $_old_ia_markup;
 
         if ( ! has_filter( 'the_content', 'wpautop' ) )
             add_filter( 'the_content', 'wpautop' );

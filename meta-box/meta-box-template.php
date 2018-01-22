@@ -10,7 +10,6 @@
 use Facebook\InstantArticles\Client\InstantArticleStatus;
 use Facebook\InstantArticles\Client\ServerMessage;
 
-$_GET['ia_markup'] = 1;
 ?>
 
 <?php if ( $dev_mode ) : ?>
