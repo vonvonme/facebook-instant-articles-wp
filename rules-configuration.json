@@ -1,6 +1,9 @@
 {
     "rules":
     [{
+        "class": "IgnoreRule",
+        "selector": "meta"
+    }, {
         "class": "TextNodeRule"
     }, {
         "class": "PassThroughRule",
