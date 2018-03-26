@@ -514,10 +514,17 @@ class Instant_Articles_Post {
 	 * @return Image|Video
 	 */
 	public function get_cover_media() {
+		if (function_exists('get_the_post_video_url')) {
+			$post_id = $this->_post->ID;
+			$featured_video_url = get_the_post_video_url( $post_id );
+
+			if ($featured_video_url) {
+				$cover_media = Video::create()->withURL($featured_video_url);
+				return $cover_media;
+			}
+		}
 
 		$cover_media = Image::create();
-
-
 		// If someone else is handling this, let them. Otherwise fall back to us trying to use the featured image.
 		if ( has_filter( 'instant_articles_cover_media' ) ) {
 			/**
