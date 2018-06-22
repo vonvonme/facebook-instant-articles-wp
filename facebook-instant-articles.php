@@ -367,9 +367,11 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	 */
 	function inject_ia_markup_meta_tag() {
 		$post = get_post();
+		$hide_ia = get_post_meta($post->ID, 'hide_ia',  true);
+
 
 		// If there's no current post, return
-		if ( ! $post ) {
+		if ( ! $post  || $hide_ia == 'hide' ) {
 			return;
 		}
 
