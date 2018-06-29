@@ -539,6 +539,7 @@ class Instant_Articles_Post {
 
 			$featured_image_data = $this->get_the_featured_image();
 			if ( isset( $featured_image_data['src'] ) && strlen( $featured_image_data['src'] ) ) {
+				$featured_image_data['src'] = str_replace( 'https://storage.googleapis.com/', 'https://', $featured_image_data['src'] );
 				$cover_media = Image::create()->withURL($featured_image_data['src']);
 				if( isset( $featured_image_data['caption'] ) && strlen( $featured_image_data['caption'] )) {
 					$cover_media->withCaption(Caption::create()->withTitle($featured_image_data['caption']));
@@ -721,12 +722,6 @@ class Instant_Articles_Post {
 			$the_content = str_replace( $divs_ads, '', $the_content );
 		}
 
-		// replacce old imgae url  to googleapis.com/blahblah
-		preg_match_all( '!//storage.cloud.google.com/!ms', $the_content, $matches );
-		foreach ( $matches[0] as $old_url ) {
-			$the_content = str_replace( $old_url, 'https://storage.googleapis.com/', $the_content );
-		}
-		// replace old imgae url  to googleapis.com/blahblah
 
 		// escape a img tag inside anchor tag to outside of anchor tag.
 /*
@@ -803,7 +798,10 @@ class Instant_Articles_Post {
 
 		if ( class_exists( 'Jetpack_Photon' ) && Jetpack::is_module_active( 'photon' ) ) {
 			$the_content = Jetpack_Photon::filter_the_content( $the_content );
+error_log("HERE");
 		}
+
+		$the_content = str_replace( 'https://storage.googleapis.com/', 'https://', $the_content );
 
 		$this->temp_content =  $the_content;
 		if (!Type::isTextEmpty($the_content)) {
