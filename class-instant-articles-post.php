@@ -983,11 +983,20 @@ error_log("HERE");
 			}
 
 			if (defined('FB_PIXEL_ID')) {
+				$catSlugs = '';
+				$cats = array();
+				if ( has_category() ) {
+					$categories = get_the_category();
+					foreach($categories as $cat) {
+						$cats[] = $cat->slug;
+					}
+					$catSlugs = join(',', $cats);
+				}
 				// pixel events
 				$document = new DOMDocument();
 				$fragment = $document->createDocumentFragment();
-				$pixel_script = "<script><![CDATA[ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead'); 
-				[5, 10, 15,30,45,60,90,120,150,180,240,300].forEach(function(seconds){ setTimeout(function(){ var current_elapsed_time = seconds; if (window.fbq && typeof window.fbq == 'function') { window.fbq('trackCustom', 'IA_ViewContent_' + seconds, {'position': 'end'}); } }, seconds * 1000); });]]></script>";
+				$pixel_script = "<script><![CDATA[ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead', {'cateogires': '{$catSlugs}'}); 
+				[5, 10, 15,30,45,60,90,120,150,180,240,300].forEach(function(seconds){ setTimeout(function(){ var current_elapsed_time = seconds; if (window.fbq && typeof window.fbq == 'function') { window.fbq('trackCustom', 'IA_ViewContent_' + seconds, {'categories': '{$catSlugs}'}); } }, seconds * 1000); });]]></script>";
 
 				$pixel_script = str_replace('{FB_PIXEL_ID}', FB_PIXEL_ID, $pixel_script);
 
