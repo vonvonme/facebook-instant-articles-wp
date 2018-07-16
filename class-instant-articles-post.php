@@ -798,7 +798,6 @@ class Instant_Articles_Post {
 
 		if ( class_exists( 'Jetpack_Photon' ) && Jetpack::is_module_active( 'photon' ) ) {
 			$the_content = Jetpack_Photon::filter_the_content( $the_content );
-error_log("HERE");
 		}
 
 		$the_content = str_replace( 'https://storage.googleapis.com/', 'https://', $the_content );
