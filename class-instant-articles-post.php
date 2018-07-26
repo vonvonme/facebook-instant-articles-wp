@@ -722,7 +722,7 @@ class Instant_Articles_Post {
 			$the_content = str_replace( $divs_ads, '', $the_content );
 		}
 
-		if (in_array(HTTP_HOST, ['id.playbrain.me'])) {
+		if (in_array(HTTP_HOST, ['id.playbrain.me', 'jp.playbrain.me'])) {
 			$secondary_post = get_secondary_post($this->_post->ID);
 			if ($secondary_post->have_posts()) {
 				$secondary_post->the_post();
