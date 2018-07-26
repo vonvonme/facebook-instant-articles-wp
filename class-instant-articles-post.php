@@ -722,6 +722,17 @@ class Instant_Articles_Post {
 			$the_content = str_replace( $divs_ads, '', $the_content );
 		}
 
+		if (in_array(HTTP_HOST, 'id.playbrain.me')) {
+			$secondary_post = get_secondary_post($this->_post->ID);
+			if ($secondary_post->have_posts()) {
+				$secondary_post->the_post();
+				$secondary_post = $secondary_post->post;
+				$secondary_content = apply_filters('the_content', $secondary_post->post_content);
+				$the_content = $the_content. "<br/><br/><h1>{$secondary_post->post_title}</h1>";
+				$the_content = $the_content.$secondary_content;
+			}
+		}
+
 
 		// escape a img tag inside anchor tag to outside of anchor tag.
 /*
