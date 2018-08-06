@@ -728,7 +728,6 @@ class Instant_Articles_Post {
 				$secondary_post->the_post();
 				$secondary_post = $secondary_post->post;
 				$secondary_content = apply_filters('the_content', $secondary_post->post_content);
-				$the_content = $the_content. "<br/><br/><h1>{$secondary_post->post_title}</h1>";
                 $secondary_post_thumbnail = get_the_post_thumbnail($secondary_post);
                 $the_content = $the_content. $secondary_post_thumbnail;
 				$the_content = $the_content. "<br/><br/><h1><b>{$secondary_post->post_title}</b></h1>";
