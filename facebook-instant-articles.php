@@ -441,7 +441,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
                         array(),
                         60
                     );
-                    //error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    if ($try > 0) {
+                        error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    }
                     if (!array_key_exists('error', json_decode($res->getBody(), true))) {
                         break;
                     }
@@ -462,7 +464,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
                             array(),
                             60
                         );
-                        //error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                        if ($try > 0) {
+                            error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                        }
                         if (!array_key_exists('error', json_decode($res->getBody(), true))) {
                             break;
                         }
@@ -470,14 +474,14 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
                     }
                 }
             } catch ( Exception $e ) {
-                Logger::getLogger( 'instantarticles-wp-plugin' )->error(
+                Logger::getLogger('instantarticles-wp-plugin')->error(
                     'Unable to submit article.',
                     $e->getTraceAsString()
                 );
             }
         }
     }
-	add_action( 'save_post', 'rescrape_article', 999, 2 );
+	add_action('save_post', 'rescrape_article', 999, 2);
 
 	function invalidate_post_transformation_info_cache( $post_id, $post ) {
 		// These post metas are caches on the calculations made to decide if
