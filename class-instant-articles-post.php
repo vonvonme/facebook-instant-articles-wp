@@ -722,7 +722,7 @@ class Instant_Articles_Post {
 			$the_content = str_replace( $divs_ads, '', $the_content );
 		}
 
-		if (FALSE != strpos(HTTP_HOST, '.playbrain.me')) {
+		if (defined('SHOW_SECONDARY_ARTICLE_IN_IA')) {
 			$secondary_post = get_secondary_post($this->_post->ID);
 			if ($secondary_post->have_posts()) {
 				$secondary_post->the_post();
@@ -735,53 +735,6 @@ class Instant_Articles_Post {
 			}
 		}
 
-
-		// escape a img tag inside anchor tag to outside of anchor tag.
-/*
-		preg_match_all( '!<a .*<img[^>]*>.*</a>!m', $the_content, $matches );
-		foreach ( $matches[0] as $m ) {
-			preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-			foreach( $matched_imgs[0] as $img_tag ) {
-				$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-			}
-		}
- */
-		// escape a img tag inside anchor tag to outside of anchor tag.
-
-		// escape a img tag inside strong tag to outside of strong tag.
-/*
-		preg_match_all( '!<strong>[^<]*<img[^>]*>[^<]*</strong>!m', $the_content, $matches );
-		foreach ( $matches[0] as $m ) {
-			preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-			foreach( $matched_imgs[0] as $img_tag ) {
-				$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-			}
-		}
- */
-		// escape a img tag inside strong tag to outside of strong tag.
-
-		// escape a img tag inside headings tag to outside of headings tag.
-/*
-		preg_match_all( '!<h(\d+)[^>]*>.*?<img[^>]*>.*?</h\1>!ms', $the_content, $matches );
-		foreach ( $matches[0] as $m ) {
-			preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-			foreach( $matched_imgs[0] as $img_tag ) {
-				$the_content = str_replace( $m, str_replace($img_tag, '', $m).$img_tag, $the_content );
-			}
-		}
-		// escape a img tag inside headings tag to outside of headings tag.
-
-/*
-		// escape a img tag inside headings tag to outside of headings tag.
-		preg_match_all( '!<li>.*?<img.*?</li>!ms', $the_content, $matches );
-		foreach ( $matches[0] as $m ) {
-			preg_match_all('!<img[^>]*>!m', $m, $matched_imgs);
-			$new_m = str_replace('<li>', '' , $m);
-			$new_m = str_replace('</li>', '' , $new_m);
-			$the_content = str_replace($m, $new_m, $the_content);
-		}
-		// escape a img tag inside headings tag to outside of headings tag.
- */
 		// remove empty ul / ol   tags
 		preg_match_all( '!<(ol|ul)>.*?</\1>!ms', $the_content, $matches );
 		foreach ( $matches[0] as $m ) {
@@ -1008,7 +961,7 @@ class Instant_Articles_Post {
 				// pixel events
 				$document = new DOMDocument();
 				$fragment = $document->createDocumentFragment();
-				$pixel_script = "<script><![CDATA[ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead', {'cateogires': '{$catSlugs}'}); 
+				$pixel_script = "<script><![CDATA[ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{FB_PIXEL_ID}'); fbq('track', 'Lead', {'cateogires': '{$catSlugs}'});
 				[5, 10, 15,30,45,60,90,120,150,180,240,300].forEach(function(seconds){ setTimeout(function(){ var current_elapsed_time = seconds; if (window.fbq && typeof window.fbq == 'function') { window.fbq('trackCustom', 'IA_ViewContent_' + seconds, {'categories': '{$catSlugs}'}); } }, seconds * 1000); });]]></script>";
 
 				$pixel_script = str_replace('{FB_PIXEL_ID}', FB_PIXEL_ID, $pixel_script);
