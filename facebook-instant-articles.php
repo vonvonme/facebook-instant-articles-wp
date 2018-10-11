@@ -449,6 +449,24 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
                     }
                     $try ++;
                 }
+                // insteram video
+                $url_encoded = urlencode($adapter->get_canonical_url()."?utm_campaign=instream");
+                while ($try < 5) {
+                    $res = $client->send(
+                        "https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+                        'POST',
+                        '',
+                        array(),
+                        60
+                    );
+                    if ($try > 0) {
+                        error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    }
+                    if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+                        break;
+                    }
+                    $try ++;
+                }
                 foreach ( $old_slugs as $slug ) {
                     $clone_post = clone $post;
                     $clone_post->post_name = $slug;
