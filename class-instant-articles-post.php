@@ -758,6 +758,7 @@ class Instant_Articles_Post {
 		$_GET['ia_markup'] = $_old_ia_markup;
 
 		$the_content = str_replace('[[ad]]', '', $the_content);
+		$the_content = str_replace('[[ad2]]', '', $the_content);
 		if ( ! has_filter( 'the_content', 'wpautop' ) )
 			add_filter( 'the_content', 'wpautop' );
 
