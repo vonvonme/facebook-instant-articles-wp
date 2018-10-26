@@ -760,7 +760,7 @@ class Instant_Articles_Post {
 		$the_content = str_replace('[[ad]]', '', $the_content);
 		$the_content = str_replace('[[ad2]]', '', $the_content);
 
-        $the_content = Vonvon\Plugin\delete_link_in_img($the_content);
+        $the_content = Vonvon\Plugin\remove_annoying_markup_tags($the_content);
 		if ( ! has_filter( 'the_content', 'wpautop' ) )
 			add_filter( 'the_content', 'wpautop' );
 
