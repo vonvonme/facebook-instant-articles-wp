@@ -374,6 +374,12 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 		if ( ! $post  || $hide_ia == 'hide' ) {
 			return;
 		}
+        if (strpos(HTTP_HOST, 'master.') !== false) {
+            return;
+        }
+        if (defined("FORCE_HIDE_FB_IA")) {
+            return;
+        }
 
 		// Transform the post to an Instant Article.
 		$adapter = new Instant_Articles_Post( $post );
