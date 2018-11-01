@@ -647,7 +647,6 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 				//$graph_api_call = add_query_arg( 'fields', 'instant_article', $graph_api_call);
                 $graph_api_call = add_query_arg( 'scrape', 'true', $graph_api_call);
 
-                error_log("==========================================");
 				try {
                     $fb->post( $graph_api_call, [], $access_token );
 					add_action( 'admin_notices', 'admin_notice__scrape_invalidation_success' );
@@ -655,12 +654,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 				} catch(Facebook\Exceptions\FacebookResponseException $e) {
 					echo '<pre>';
 					print_r($e->getTraceAsString());
-					error_log($e->getTraceAsString());
-                    error_log(var_export($e, true));
 
 					add_action( 'admin_notices', 'admin_notice__scrape_invalidation_failed' );
 				} catch(Facebook\Exceptions\FacebookSDKException $e) {
-                    error_log("iSUCKSUCKSUCKSUCKSUCK");
 
 					add_action( 'admin_notices', 'admin_notice__scrape_invalidation_failed' );
 				}
