@@ -441,7 +441,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 
 	Instant_Articles_Wizard::init();
 	Instant_Articles_Signer::init();
-	//Instant_Articles_Publisher::init();
+	Instant_Articles_Publisher::init();
 
     function rescrape_article( $post_id, $post ) {
         $adapter = new Instant_Articles_Post( $post );
