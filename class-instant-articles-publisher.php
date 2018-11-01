@@ -29,7 +29,13 @@ class Instant_Articles_Publisher {
 	 */
 	public static function init() {
 		add_action( 'save_post', array( 'Instant_Articles_Publisher', 'submit_article' ), 999, 2 );
+		add_action( 'wp_trash_post', array( 'Instant_Articles_Publisher', 'submit_article2' ), 999 );
 	}
+
+	 public static function submit_article2( $post_id ) {
+		 submit_article($post_id, get_post($post_id));
+	 }
+
 
 	/**
 	 * Submits article to Instant Articles.
@@ -44,9 +50,9 @@ class Instant_Articles_Publisher {
 		}
 
 		// Don't process if this post is not published
-		if ( 'publish' !== $post->post_status ) {
-			return;
-		}
+		//if ( 'publish' !== $post->post_status ) {
+			//return;
+		//}
 
 		// Only process posts
 		$post_types = apply_filters( 'instant_articles_post_types', array( 'post' ) );
@@ -83,19 +89,33 @@ class Instant_Articles_Publisher {
 				? ( $publishing_settings['dev_mode'] ? true : false )
 				: false;
 
-			if ( isset( $fb_app_settings['app_id'] )
-				&& isset( $fb_app_settings['app_secret'] )
-				&& isset( $fb_page_settings['page_access_token'] )
-				&& isset( $fb_page_settings['page_id'] ) ) {
+			$app_id = defined("FB_APP_ID") ? FB_APP_ID : $fb_app_settings['app_id'];
+			$app_secret = defined("FB_APP_SECRET")? FB_APP_SECRET : $fb_app_settings['app_secret'];
+			$access_token = defined("FB_PAGE_ACCESS_TOKEN") ? FB_PAGE_ACCESS_TOKEN : $fb_page_settings['page_access_tokne'];
+			$page_id = defined("FB_PAGE_ID") ? FB_PAGE_ID : $fb_page_settings['FB_PAGE_ID'];
+
+			//if ( isset( $fb_app_settings['app_id'] )
+				//&& isset( $fb_app_settings['app_secret'] )
+				//&& isset( $fb_page_settings['page_access_token'] )
+				//&& isset( $fb_page_settings['page_id'] ) ) {
+            if ($app_id && $app_secret && $access_token && $page_id) {
 
 				$client = Client::create(
-					$fb_app_settings['app_id'],
-					$fb_app_settings['app_secret'],
-					$fb_page_settings['page_access_token'],
-					//$fb_page_settings['page_id'],
-                    (FB_PAGE_ID),
+					$app_id,
+					$app_secret,
+					$access_token,
+					$page_id,
 					$dev_mode
 				);
+
+				$hideIA = get_post_meta($post_id, 'hide_ia', true);
+				if (defined("FORCE_HIDE_FB_IA"))
+					$hideIA = true;
+				if ($hideIA || 'publish' !== $post->post_status) {
+					$client->removeArticle( $article->getCanonicalURL() );
+					delete_post_meta( $post_id, self::SUBMISSION_ID_KEY );
+					return;
+				}
 
 				// Don't publish posts with password protection
 				if ( post_password_required( $post ) ) {
