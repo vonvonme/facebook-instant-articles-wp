@@ -443,81 +443,82 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	Instant_Articles_Signer::init();
 	Instant_Articles_Publisher::init();
 
-    //function rescrape_article( $post_id, $post ) {
-        //$adapter = new Instant_Articles_Post( $post );
-        //$old_slugs = get_post_meta( $post_id, '_wp_old_slug' );
-        //$access_token = FB_ACCESS_TOKEN;
-        //if ( $adapter->should_submit_post() ) {
-            //try {
-                //$client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
-                //$url_encoded = urlencode($adapter->get_canonical_url());
-                //$try = 0;
-                //while ($try < 5) {
-                    //$res = $client->send(
-                        //"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
-                        //'POST',
-                        //'',
-                        //array(),
-                        //60
-                    //);
-                    //if ($try > 0) {
-                        //error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
-                    //}
-                    //if (!array_key_exists('error', json_decode($res->getBody(), true))) {
-                        //break;
-                    //}
-                    //$try ++;
-                //}
-                 //insteram video
-                //$url_encoded = urlencode($adapter->get_canonical_url()."?utm_campaign=instream");
-                //while ($try < 5) {
-                    //$res = $client->send(
-                        //"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
-                        //'POST',
-                        //'',
-                        //array(),
-                        //60
-                    //);
-                    //if ($try > 0) {
-                        //error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
-                    //}
-                    //if (!array_key_exists('error', json_decode($res->getBody(), true))) {
-                        //break;
-                    //}
-                    //$try ++;
-                //}
-                //foreach ( $old_slugs as $slug ) {
-                    //$clone_post = clone $post;
-                    //$clone_post->post_name = $slug;
-                    //$clone_adapter = new Instant_Articles_Post( $clone_post );
+    function rescrape_article( $post_id, $post ) {
+        $adapter = new Instant_Articles_Post( $post );
+        $old_slugs = get_post_meta( $post_id, '_wp_old_slug' );
+        $access_token = FB_ACCESS_TOKEN;
+        if ( $adapter->should_submit_post() ) {
+            try {
+                $client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
+                $url_encoded = urlencode($adapter->get_canonical_url());
+                $try = 0;
+                while ($try < 5) {
+                    $res = $client->send(
+                        "https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+                        'POST',
+                        '',
+                        array(),
+                        60
+                    );
+                    if ($try > 0) {
+                        error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    }
+                    if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+                        break;
+                    }
+                    $try ++;
+                }
+                 /*insteram video
+                  * */
+                $url_encoded = urlencode($adapter->get_canonical_url()."?utm_campaign=instream");
+                while ($try < 5) {
+                    $res = $client->send(
+                        "https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+                        'POST',
+                        '',
+                        array(),
+                        60
+                    );
+                    if ($try > 0) {
+                        error_log($adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                    }
+                    if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+                        break;
+                    }
+                    $try ++;
+                }
+                foreach ( $old_slugs as $slug ) {
+                    $clone_post = clone $post;
+                    $clone_post->post_name = $slug;
+                    $clone_adapter = new Instant_Articles_Post( $clone_post );
 
-                    //$url_encoded = urlencode($clone_adapter->get_canonical_url());
-                    //$try = 0;
-                    //while ($try < 5) {
-                        //$res = $client->send(
-                            //"https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
-                            //'POST',
-                            //'',
-                            //array(),
-                            //60
-                        //);
-                        //if ($try > 0) {
-                            //error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
-                        //}
-                        //if (!array_key_exists('error', json_decode($res->getBody(), true))) {
-                            //break;
-                        //}
-                        //$try ++;
-                    //}
-                //}
-            //} catch ( Exception $e ) {
-                //Logger::getLogger('instantarticles-wp-plugin')->error(
-                    //'Unable to submit article.',
-                    //$e->getTraceAsString()
-                //);
-            //}
-        //}
-    //}
+                    $url_encoded = urlencode($clone_adapter->get_canonical_url());
+                    $try = 0;
+                    while ($try < 5) {
+                        $res = $client->send(
+                            "https://graph.facebook.com/?id=$url_encoded&scrape=true&access_token=$access_token",
+                            'POST',
+                            '',
+                            array(),
+                            60
+                        );
+                        if ($try > 0) {
+                            error_log($clone_adapter->get_canonical_url(). " rescraping res try $try:: ".$res->getBody());
+                        }
+                        if (!array_key_exists('error', json_decode($res->getBody(), true))) {
+                            break;
+                        }
+                        $try ++;
+                    }
+                }
+            } catch ( Exception $e ) {
+                Logger::getLogger('instantarticles-wp-plugin')->error(
+                    'Unable to submit article.',
+                    $e->getTraceAsString()
+                );
+            }
+        }
+    }
 	//add_action('save_post', 'rescrape_article', 999, 2);
 
 	function invalidate_post_transformation_info_cache( $post_id, $post ) {
@@ -668,59 +669,59 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	}
 	add_action( 'post_updated', 'invalidate_scrape_on_update', 10, 3 );
 
-	function rescrape_article( $post_id, $post ) {
-        return;
-		$adapter = new Instant_Articles_Post( $post );
-		$old_slugs = get_post_meta( $post_id, '_wp_old_slug' );
-		if ( $adapter->should_submit_post() ) {
-			$fb_app_settings = Instant_Articles_Option_FB_App::get_option_decoded();
-			if (
-				( isset( $fb_app_settings[ 'page_access_token' ] ) && $fb_app_settings[ 'page_access_token' ] ) &&
-				( isset( $fb_app_settings[ 'app_id' ] ) && $fb_app_settings[ 'app_id' ] ) &&
-				( isset( $fb_app_settings[ 'app_secret' ] ) && $fb_app_settings[ 'app_secret' ] )
-			) {
-				// Defer to access_token if configured to ensure backwards compatibility
-				return;
-			}
+	//function rescrape_article( $post_id, $post ) {
+        //return;
+		//$adapter = new Instant_Articles_Post( $post );
+		//$old_slugs = get_post_meta( $post_id, '_wp_old_slug' );
+		//if ( $adapter->should_submit_post() ) {
+			//$fb_app_settings = Instant_Articles_Option_FB_App::get_option_decoded();
+			//if (
+				//( isset( $fb_app_settings[ 'page_access_token' ] ) && $fb_app_settings[ 'page_access_token' ] ) &&
+				//( isset( $fb_app_settings[ 'app_id' ] ) && $fb_app_settings[ 'app_id' ] ) &&
+				//( isset( $fb_app_settings[ 'app_secret' ] ) && $fb_app_settings[ 'app_secret' ] )
+			//) {
+                 //Defer to access_token if configured to ensure backwards compatibility
+				//return;
+			//}
 
-			try {
-				if ( extension_loaded('openssl') ) {
-					$client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
-					$url_encoded = urlencode($adapter->get_canonical_url());
-					$client->send(
-						Instant_Articles_Signer::sign_request_path(
-							"https://graph.facebook.com/?id=$url_encoded&scrape=true"
-						),
-						'POST',
-						'',
-						array(),
-						60
-					);
-					foreach ( $old_slugs as $slug ) {
-						$clone_post = clone $post;
-						$clone_post->post_name = $slug;
-						$clone_adapter = new Instant_Articles_Post( $clone_post );
+			//try {
+				//if ( extension_loaded('openssl') ) {
+					//$client = Facebook\HttpClients\HttpClientsFactory::createHttpClient( null );
+					//$url_encoded = urlencode($adapter->get_canonical_url());
+					//$client->send(
+						//Instant_Articles_Signer::sign_request_path(
+							//"https://graph.facebook.com/?id=$url_encoded&scrape=true"
+						//),
+						//'POST',
+						//'',
+						//array(),
+						//60
+					//);
+					//foreach ( $old_slugs as $slug ) {
+						//$clone_post = clone $post;
+						//$clone_post->post_name = $slug;
+						//$clone_adapter = new Instant_Articles_Post( $clone_post );
 
-						$url_encoded = urlencode($clone_adapter->get_canonical_url());
-						$client->send(
-							Instant_Articles_Signer::sign_request_path(
-								"https://graph.facebook.com/?id=$url_encoded&scrape=true"
-							),
-							'POST',
-							'',
-							array(),
-							60
-						);
-					}
-				}
-			} catch ( Exception $e ) {
-				Logger::getLogger( 'instantarticles-wp-plugin' )->error(
-					'Unable to submit article.',
-					$e->getTraceAsString()
-				);
-			}
-		}
-	}
+						//$url_encoded = urlencode($clone_adapter->get_canonical_url());
+						//$client->send(
+							//Instant_Articles_Signer::sign_request_path(
+								//"https://graph.facebook.com/?id=$url_encoded&scrape=true"
+							//),
+							//'POST',
+							//'',
+							//array(),
+							//60
+						//);
+					//}
+				//}
+			//} catch ( Exception $e ) {
+				//Logger::getLogger( 'instantarticles-wp-plugin' )->error(
+					//'Unable to submit article.',
+					//$e->getTraceAsString()
+				//);
+			//}
+		//}
+	//}
 	add_action( 'save_post', 'rescrape_article', 999, 2 );
 
 }
