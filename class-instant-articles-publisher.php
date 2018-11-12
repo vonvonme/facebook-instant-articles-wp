@@ -33,7 +33,7 @@ class Instant_Articles_Publisher {
 	}
 
 	 public static function submit_article2( $post_id ) {
-		 submit_article($post_id, get_post($post_id));
+         Instant_Articles_Publisher::submit_article($post_id, get_post($post_id));
 	 }
 
 
