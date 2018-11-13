@@ -169,20 +169,12 @@
         "selector" : "blockquote.instagram-media",
         "properties" : {
             "interactive.iframe" : {
-                "type" : "multiple",
-                "children": [
-                    {
-                        "type": "element",
-                        "selector": "blockquote"
-                    }, {
-                        "type": "next-sibling-element-of",
-                        "selector": "blockquote"
-                    }
-                ]
+                "type" : "element",
+                "selector" : "blockquote"
             }
         }
     }, {
-        "class": "InteractiveRule",
+    "class": "InteractiveRule",
         "selector" : "blockquote.twitter-tweet",
         "properties" : {
             "interactive.iframe" : {
