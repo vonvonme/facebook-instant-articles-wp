@@ -223,6 +223,30 @@
                 "selector" : "iframe"
             }
         }
+    },{
+        "class": "InteractiveRule",
+        "selector" : "div.intrinsic-container",
+        "properties" : {
+            "interactive.url" : {
+                "type" : "string",
+                "selector" : "iframe",
+                "attribute": "src"
+            },
+            "interactive.width" : {
+                "type" : "int",
+                "selector" : "iframe",
+                "attribute": "width"
+            },
+            "interactive.height" : {
+                "type" : "int",
+                "selector" : "iframe",
+                "attribute": "height"
+            },
+            "interactive.iframe" : {
+                "type" : "children",
+                "selector" : "iframe"
+            }
+        }
     }, {
         "class": "InteractiveRule",
         "selector" : "div.embed",
