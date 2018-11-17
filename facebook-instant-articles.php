@@ -379,18 +379,19 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	function inject_ia_markup_meta_tag() {
 		$post = get_post();
 		$hide_ia = get_post_meta($post->ID, 'hide_ia',  true);
-
+		$lang = pll_get_post_language($post->ID);
 
 		// If there's no current post, return
 		if ( ! $post  || $hide_ia == 'hide' ) {
 			return;
 		}
-        if (strpos(HTTP_HOST, 'master.') !== false) {
-            //return;
-        }
-        if (defined("FORCE_HIDE_FB_IA")) {
-            return;
-        }
+		if (strpos(HTTP_HOST, 'master.') !== false) {
+			//return;
+		}
+		// newsmalljoys articles must never be published as IA
+		if ($lang == 'newsmalljoys') {
+			return;
+		}
 
 		// Transform the post to an Instant Article.
 		$adapter = new Instant_Articles_Post( $post );
