@@ -91,7 +91,7 @@ class Instant_Articles_Publisher {
 
 			$app_id = defined("FB_APP_ID") ? FB_APP_ID : $fb_app_settings['app_id'];
 			$app_secret = defined("FB_APP_SECRET")? FB_APP_SECRET : $fb_app_settings['app_secret'];
-			$access_token = defined("FB_PAGE_ACCESS_TOKEN") ? FB_PAGE_ACCESS_TOKEN : $fb_page_settings['page_access_tokne'];
+			$access_token = defined("FB_PAGE_ACCESS_TOKEN") ? FB_PAGE_ACCESS_TOKEN : $fb_page_settings['page_access_token'];
 			$page_id = defined("FB_PAGE_ID") ? FB_PAGE_ID : $fb_page_settings['FB_PAGE_ID'];
 
 			//if ( isset( $fb_app_settings['app_id'] )
