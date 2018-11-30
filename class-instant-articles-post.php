@@ -723,20 +723,20 @@ class Instant_Articles_Post {
 		}
 
 		if (defined('SHOW_SECONDARY_ARTICLE_IN_IA')) {
-			$secondary_post_in_ia_id = get_post_meta($this->_post->ID, "secondary_post_in_ia_id", true);
-			if ($secondary_post_in_ia_id) {
-				$query_args = array(
-					'p' => $secondary_post_in_ia_id
-				);
-				$secondary_post = new WP_Query($query_args);
-			} else {
+            //$secondary_post_in_ia_id = get_post_meta($this->_post->ID, "secondary_post_in_ia_id", true);
+			//if ($secondary_post_in_ia_id) {
+				//$query_args = array(
+					//'p' => $secondary_post_in_ia_id
+				//);
+				//$secondary_post = new WP_Query($query_args);
+			//} else {
 				$secondary_post = get_secondary_post($this->_post->ID);
-			}
+			//}
 			if ($secondary_post !== null) {
 				if ($secondary_post->have_posts()) {
 					$secondary_post->the_post();
 					$secondary_post = $secondary_post->post;
-					update_post_meta($this->_post->ID, "secondary_post_in_ia_id", $secondary_post->ID);
+					//update_post_meta($this->_post->ID, "secondary_post_in_ia_id", $secondary_post->ID);
 					$secondary_content = apply_filters('the_content', $secondary_post->post_content);
 					$secondary_post_thumbnail = get_the_post_thumbnail($secondary_post);
 					$the_content = $the_content. $secondary_post_thumbnail;
