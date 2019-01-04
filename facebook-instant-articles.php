@@ -389,9 +389,9 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 			//return;
 		}
 		// newsmalljoys articles must never be published as IA
-		if ($lang == 'newsmalljoys') {
+		if (in_array($lang, ['newsmalljoys', 'lovetips'])) {
 			return;
-		}
+        }
 
 		// Transform the post to an Instant Article.
 		$adapter = new Instant_Articles_Post( $post );

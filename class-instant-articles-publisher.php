@@ -45,6 +45,11 @@ class Instant_Articles_Publisher {
 	 */
 	public static function submit_article( $post_id, $post ) {
 		// Don't process if this is just a revision or an autosave.
+
+		$lang = pll_get_post_language($post_id, 'slug');
+		if ($lang == 'lovetips') {
+			return;
+		}
 		if ( wp_is_post_revision( $post ) || wp_is_post_autosave( $post->ID ) ) {
 			return;
 		}
