@@ -389,7 +389,7 @@ if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 			//return;
 		}
 		// newsmalljoys articles must never be published as IA
-		if (in_array($lang, ['newsmalljoys'])) {
+		if (in_array($lang, ['newsmalljoys', 'lovetips'])) {
 			return;
         }
 
