@@ -780,7 +780,7 @@ class Instant_Articles_Post {
 		if ( ! has_filter( 'the_content', 'wpautop' ) )
 			add_filter( 'the_content', 'wpautop' );
 
-        //$the_content = apply_filters( 'the_content', $the_content );
+		$the_content = apply_filters( 'the_content', $the_content );
 
 		if ( class_exists( 'Jetpack_Photon' ) && Jetpack::is_module_active( 'photon' ) ) {
 			$the_content = Jetpack_Photon::filter_the_content( $the_content );
