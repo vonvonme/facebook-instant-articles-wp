@@ -780,6 +780,9 @@ class Instant_Articles_Post {
 		if ( ! has_filter( 'the_content', 'wpautop' ) )
 			add_filter( 'the_content', 'wpautop' );
 
+		if ( ! has_filter( 'the_content', 'Vonvon\Plugin\attach_rumble_player') )
+			add_filter("the_content", 'Vonvon\Plugin\attach_rumble_player', 20);
+			
 		$the_content = apply_filters( 'the_content', $the_content );
 
 		if ( class_exists( 'Jetpack_Photon' ) && Jetpack::is_module_active( 'photon' ) ) {
