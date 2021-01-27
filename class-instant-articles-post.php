@@ -730,24 +730,18 @@ class Instant_Articles_Post {
 				//);
 				//$secondary_post = new WP_Query($query_args);
 			//} else {
-				//$secondary_post = get_secondary_post($this->_post->ID);
+				$secondary_post = get_secondary_post($this->_post->ID);
 			//}
-
-			$postID = $this->_post->ID;
-			for ($i = 1; $i <= 3; $i++) {
-				$secondary_post = get_secondary_post($postID);
-				if ($secondary_post !== null) {
-					if ($secondary_post->have_posts()) {
-						$secondary_post->the_post();
-						$secondary_post = $secondary_post->post;
-						$postID = $secondary_post->ID
-						//update_post_meta($this->_post->ID, "secondary_post_in_ia_id", $secondary_post->ID);
-						$secondary_content = apply_filters('the_content', $secondary_post->post_content);
-						$secondary_post_thumbnail = get_the_post_thumbnail($secondary_post);
-						$the_content = $the_content. $secondary_post_thumbnail;
-						$the_content = $the_content. "<br/><br/><h1><b>{$secondary_post->post_title}</b></h1>";
-						$the_content = $the_content.$secondary_content;
-					}
+			if ($secondary_post !== null) {
+				if ($secondary_post->have_posts()) {
+					$secondary_post->the_post();
+					$secondary_post = $secondary_post->post;
+					//update_post_meta($this->_post->ID, "secondary_post_in_ia_id", $secondary_post->ID);
+					$secondary_content = apply_filters('the_content', $secondary_post->post_content);
+					$secondary_post_thumbnail = get_the_post_thumbnail($secondary_post);
+					$the_content = $the_content. $secondary_post_thumbnail;
+					$the_content = $the_content. "<br/><br/><h1><b>{$secondary_post->post_title}</b></h1>";
+					$the_content = $the_content.$secondary_content;
 				}
 			}
 		}
