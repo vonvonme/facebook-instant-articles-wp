@@ -722,7 +722,7 @@ class Instant_Articles_Post {
 			$the_content = str_replace( $divs_ads, '', $the_content );
 		}
 
-		if (defined('SHOW_SECONDARY_ARTICLE_IN_IA')) {
+		if (defined('SHOW_SECONDARY_ARTICLE_IN_IA') && false) {
             //$secondary_post_in_ia_id = get_post_meta($this->_post->ID, "secondary_post_in_ia_id", true);
 			//if ($secondary_post_in_ia_id) {
 				//$query_args = array(
